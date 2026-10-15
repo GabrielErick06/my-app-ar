@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Primeiro App AR</title>
+    <!-- Importando as bibliotecas A-Frame e AR.js -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+    <!-- Inicializa a cena 3D e o motor de Realidade Aumentada -->
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+        
+        <!-- Define o marcador padrão chamado "Hiro" -->
+        <a-marker preset="hiro">
+            
+            <!-- Cria um cubo vermelho que vai flutuar em cima do marcador -->
+            <a-box position="0 0.5 0" color="#e50914" animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"></a-box>
+            
+        </a-marker>
+
+        <!-- Adiciona a câmera que o usuário vai visualizar -->
+        <a-entity camera></a-entity>
+        
+    </a-scene>
+
+</body>
+</html>
