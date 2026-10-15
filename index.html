@@ -2,27 +2,37 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Primeiro App AR</title>
-    <!-- Importando as bibliotecas A-Frame e AR.js -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <title>AR Sem Marcador (Flutuante)</title>
+    <!-- Importamos apenas o A-Frame puro -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
 
-    <!-- Inicializa a cena 3D e o motor de Realidade Aumentada -->
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-        
-        <!-- Define o marcador padrão chamado "Hiro" -->
-        <a-marker preset="hiro">
-            
-            <!-- Cria um cubo vermelho que vai flutuar em cima do marcador -->
-            <a-box position="0 0.5 0" color="#e50914" animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"></a-box>
-            
-        </a-marker>
+    <!-- Inicializamos a cena. 
+         A propriedade 'xr-mode-ui' habilita o botão para entrar em AR. -->
+    <a-scene xr-mode-ui="enabled: true">
 
-        <!-- Adiciona a câmera que o usuário vai visualizar -->
-        <a-entity camera></a-entity>
-        
+        <!-- 1. CÂMERA -->
+        <a-camera position="0 1.6 0"></a-camera>
+
+        <!-- 2. OBJETO PRÉ-SETADO -->
+        <!-- O 'position' coloca o cubo no eixo X=0, Y=1.5 (altura dos olhos) e Z=-2 (2 metros para a frente) -->
+        <a-entity position="0 1.5 -2">
+            
+            <!-- Um cubo vermelho e um texto embaixo dele -->
+            <a-box color="#e50914" depth="0.5" height="0.5" width="0.5" 
+                   animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
+            </a-box>
+            
+            <a-text value="Objeto Pre-setado!" align="center" position="0 -0.5 0" color="white"></a-text>
+
+        </a-entity>
+
+        <!-- 3. LUZ -->
+        <!-- Opcional, apenas para o cubo não ficar chapado -->
+        <a-light type="directional" position="1 2 1" intensity="1.5"></a-light>
+        <a-light type="ambient" intensity="0.5"></a-light>
+
     </a-scene>
 
 </body>
