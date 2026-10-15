@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carro em Realidade Aumentada</title>
-    <!-- Importar a ferramenta oficial da Google para AR -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <title>Carro AR - Correção</title>
+    
+    <!-- Biblioteca Model Viewer (Versão Atualizada) -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
     <style>
         body { 
             margin: 0; 
             padding: 0; 
-            background-color: #222; 
+            /* Mudei o fundo para um cinza claro para destacar o carro */
+            background-color: #e0e0e0; 
         }
-        /* Faz o visualizador ocupar o ecrã inteiro */
         model-viewer { 
             width: 100vw; 
             height: 100vh; 
@@ -21,15 +23,15 @@
 </head>
 <body>
 
-    <!-- O componente que faz tudo: carrega o carro, cria as sombras e ativa o AR -->
+    <!-- Usando arquivo .glb que não precisa de arquivos externos -->
     <model-viewer 
-        src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Buggy/glTF/Buggy.gltf" 
+        src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/ToyCar/glTF-Binary/ToyCar.glb" 
         ar 
         ar-modes="webxr scene-viewer quick-look" 
         camera-controls 
         auto-rotate
         shadow-intensity="1"
-        alt="Um modelo 3D de um carro em AR">
+        alt="Carro 3D">
     </model-viewer>
 
 </body>
