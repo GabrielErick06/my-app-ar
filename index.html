@@ -1,98 +1,36 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>AR Carro - Hit Test</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    
-    <!-- Este script é necessário para fazer o "Hit Test" (escanear o chão) -->
-    <script>
-      AFRAME.registerComponent('ar-hit-test', {
-        init: function () {
-          this.xrHitTestSource = null;
-          this.viewerSpace = null;
-          this.refSpace = null;
-
-          this.el.sceneEl.renderer.xr.addEventListener('sessionstart', (ev) => {
-            let session = this.el.sceneEl.renderer.xr.getSession();
-
-            let element = this.el;
-            session.addEventListener('select', function () {
-              let position = element.getAttribute('position');
-              
-              // Quando o usuário tocar na tela, clonamos o carro e colocamos na posição do alvo
-              let car = document.createElement('a-entity');
-              car.setAttribute('gltf-model', '#car-model');
-              car.setAttribute('position', position);
-              car.setAttribute('scale', '0.5 0.5 0.5'); // Tamanho do carro
-              car.setAttribute('shadow', 'receive: false');
-              document.querySelector('a-scene').appendChild(car);
-            });
-
-            session.requestReferenceSpace('viewer').then((space) => {
-              this.viewerSpace = space;
-              session.requestHitTestSource({ space: this.viewerSpace })
-                  .then((hitTestSource) => {
-                    this.xrHitTestSource = hitTestSource;
-                  });
-            });
-
-            session.requestReferenceSpace('local-floor').then((space) => {
-              this.refSpace = space;
-            });
-          });
-        },
-        tick: function () {
-          if (this.el.sceneEl.is('ar-mode')) {
-            if (!this.xrHitTestSource) return;
-
-            let frame = this.el.sceneEl.frame;
-            if (!frame) return;
-
-            let hitTestResults = frame.getHitTestResults(this.xrHitTestSource);
-            if (hitTestResults.length > 0) {
-              let pose = hitTestResults[0].getPose(this.refSpace);
-              
-              // Oculta o anel se estivermos olhando para o céu, mostra se achar o chão
-              this.el.setAttribute('visible', 'true');
-              this.el.setAttribute('position', {
-                x: pose.transform.position.x,
-                y: pose.transform.position.y,
-                z: pose.transform.position.z
-              });
-            } else {
-              this.el.setAttribute('visible', 'false');
-            }
-          }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carro em Realidade Aumentada</title>
+    <!-- Importar a ferramenta oficial da Google para AR -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #222; 
         }
-      });
-    </script>
+        /* Faz o visualizador ocupar o ecrã inteiro */
+        model-viewer { 
+            width: 100vw; 
+            height: 100vh; 
+        }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>
 
-    <!-- Ativamos o WebXR com os recursos de Hit Test liberados -->
-    <a-scene webxr="requiredFeatures: hit-test,local-floor;" xr-mode-ui="enabled: true">
-        
-        <!-- CARREGAR O MODELO DO CARRO -->
-        <a-assets>
-            <!-- Este é um modelo 3D gratuito de um carro esportivo na web -->
-            <a-asset-item id="car-model" src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Buggy/glTF/Buggy.gltf"></a-asset-item>
-        </a-assets>
-
-        <!-- O ALVO (RETÍCULO) QUE VAI PROCURAR O CHÃO -->
-        <a-entity ar-hit-test visible="false">
-            <!-- Um anel branco transparente para mostrar onde o chão foi detectado -->
-            <a-ring color="white" radius-inner="0.1" radius-outer="0.15" rotation="-90 0 0" opacity="0.7"></a-ring>
-        </a-entity>
-
-        <!-- CÂMERA -->
-        <a-camera position="0 1.6 0"></a-camera>
-
-        <!-- ILUMINAÇÃO PARA O CARRO NÃO FICAR ESCURO -->
-        <a-light type="directional" position="0.5 1 1" intensity="2"></a-light>
-        <a-light type="ambient" intensity="1"></a-light>
-
-    </a-scene>
+    <!-- O componente que faz tudo: carrega o carro, cria as sombras e ativa o AR -->
+    <model-viewer 
+        src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Buggy/glTF/Buggy.gltf" 
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        camera-controls 
+        auto-rotate
+        shadow-intensity="1"
+        alt="Um modelo 3D de um carro em AR">
+    </model-viewer>
 
 </body>
 </html>
